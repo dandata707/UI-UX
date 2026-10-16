@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+:root {
+  /* Google Maps blue */
+  --color-primary: #1a73e8;
+  --color-primary-gradient-mid: #1e88e5;
+  --color-primary-gradient-light: #4285f4;
+  --color-primary-hover: #1557bf;
+  --color-primary-deep: #0d47a1;
+  --color-primary-surface: #e8f0fe;
+
+  /* Đà Lạt map colors */
+  --map-water-xuanhuong: #a5c8fc;
+  --map-water-stroke: #7baaf7;
+  --map-park-doicu: #d4eed8;
+  --map-flower-garden: #c8e6c9;
+  --map-road-promenade: #fef0cd;
+  --map-road-surface: #ffffff;
+  --map-road-casing: #dadce0;
+  --map-terrain-base: #f4f3f0;
+
+  /* Semantic colors */
+  --color-pin-red: #ea4335;
+  --color-success-green: #137333;
+  --color-success-surface: #e6f4ea;
+  --color-rating-yellow: #fbbc04;
+  --color-express-orange: #f97316;
+
+  /* App surfaces */
+  --surface-app-bg: #f8f9fa;
+  --surface-card: #ffffff;
+  --text-primary: #202124;
+  --text-secondary: #5f6368;
+  --canvas-bg: #0d1117;
+  --device-frame: #0f172a;
+}
+
+@theme {
+  --font-sans: "Inter", Arial, sans-serif;
+  --font-mono: "Inter", Arial, sans-serif;
+}
+
+@theme inline {
+  --color-blue-50: var(--color-primary-surface);
+  --color-blue-100: var(--map-water-xuanhuong);
+  --color-blue-200: var(--color-primary-surface);
+  --color-blue-400: var(--map-water-stroke);
+  --color-blue-500: var(--color-primary-gradient-light);
+  --color-blue-600: var(--color-primary-gradient-mid);
+  --color-blue-700: var(--color-primary-hover);
+  --color-blue-800: var(--color-primary-deep);
+  --color-blue-900: var(--color-primary);
+  --color-blue-950: var(--color-primary-deep);
+
+  --color-slate-50: var(--surface-app-bg);
+  --color-slate-100: var(--map-terrain-base);
+  --color-slate-200: var(--map-road-casing);
+  --color-slate-300: var(--map-road-casing);
+  --color-slate-500: var(--text-secondary);
+  --color-slate-600: var(--text-secondary);
+  --color-slate-700: var(--text-secondary);
+  --color-slate-800: var(--text-primary);
+  --color-slate-900: var(--text-primary);
+  --color-slate-950: var(--canvas-bg);
+
+  --color-orange-500: var(--color-express-orange);
+  --color-red-500: var(--color-pin-red);
+  --color-red-600: var(--color-pin-red);
+  --color-yellow-500: var(--color-rating-yellow);
+  --color-amber-50: var(--map-road-promenade);
+  --color-amber-500: var(--color-rating-yellow);
+  --color-emerald-50: var(--color-success-surface);
+  --color-emerald-600: var(--color-success-green);
+  --color-emerald-700: var(--color-success-green);
+  --color-green-50: var(--color-success-surface);
+  --color-green-700: var(--color-success-green);
+}
+
+.prototype-switcher {
+  background: linear-gradient(
+    110deg,
+    var(--color-primary),
+    var(--color-primary-gradient-mid),
+    var(--color-primary-gradient-light)
+  );
+}
+
+/* Keep every screen scrollable without showing browser or nested scrollbars. */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}

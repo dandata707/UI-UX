@@ -1,0 +1,8 @@
+{
+  "name": "Thuê Xe Máy Đà Lạt v2.1",
+  "description": "Prototype tương tác ứng dụng thuê xe máy Đà Lạt trên khung mobile 390×844 với bảng màu xanh dương Google Maps và nút cam nổi bật.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
