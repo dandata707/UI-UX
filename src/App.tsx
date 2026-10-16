@@ -67,7 +67,7 @@ export default function App() {
   const [selectedDetailShopId, setSelectedDetailShopId] = useState<string>('shop-1');
 
   // Saved state for Màn 4 & Màn 5
-  const [isComparisonSaved, setIsComparisonSaved] = useState<boolean>(true);
+  const [savedOptionIds, setSavedOptionIds] = useState<string[]>([]);
 
   // Compare selection toggling (Tối đa 3 phương án)
   const handleToggleCompare = (option: MotorbikeOption) => {
@@ -98,6 +98,15 @@ export default function App() {
   const compareOptionsList: MotorbikeOption[] = selectedOptionIds
     .map((id) => allOptions.find((o) => o.id === id))
     .filter((o): o is MotorbikeOption => Boolean(o));
+
+  const savedOptionsList: MotorbikeOption[] = savedOptionIds
+    .map((id) => allOptions.find((o) => o.id === id))
+    .filter((o): o is MotorbikeOption => Boolean(o));
+
+  const isCurrentComparisonSaved =
+    selectedOptionIds.length >= 2 &&
+    selectedOptionIds.length === savedOptionIds.length &&
+    selectedOptionIds.every((id) => savedOptionIds.includes(id));
 
   const fullCompareList: MotorbikeOption[] =
     compareOptionsList.length > 0
@@ -140,6 +149,22 @@ export default function App() {
     if (count <= 2) setActiveScreenId('compare-1');
     else if (count === 3) setActiveScreenId('compare-2');
     else setActiveScreenId('compare-3');
+  };
+
+  const handleToggleComparisonSaved = (nextSaved: boolean) => {
+    setSavedOptionIds(nextSaved ? [...selectedOptionIds] : []);
+  };
+
+  const handleOpenSavedComparison = () => {
+    if (savedOptionIds.length < 2) return;
+    setSelectedOptionIds([...savedOptionIds]);
+    setActiveScreenId(savedOptionIds.length === 2 ? 'compare-1' : 'compare-2');
+  };
+
+  const handleShareSavedComparison = () => {
+    if (savedOptionIds.length < 2) return;
+    setSelectedOptionIds([...savedOptionIds]);
+    setActivePopup('share');
   };
 
   // Quick jump presets for easy navigation testing
@@ -230,8 +255,8 @@ export default function App() {
             onBack={() => setActiveScreenId('results')}
             onAddMoreOptions={() => setActiveScreenId('results')}
             forcedMode="two"
-            isSavedInitial={isComparisonSaved}
-            onToggleSavedGlobal={setIsComparisonSaved}
+            isSavedInitial={isCurrentComparisonSaved}
+            onToggleSavedGlobal={handleToggleComparisonSaved}
           />
         );
 
@@ -250,8 +275,8 @@ export default function App() {
             onBack={() => setActiveScreenId('results')}
             onAddMoreOptions={() => setActiveScreenId('results')}
             forcedMode="three"
-            isSavedInitial={isComparisonSaved}
-            onToggleSavedGlobal={setIsComparisonSaved}
+            isSavedInitial={isCurrentComparisonSaved}
+            onToggleSavedGlobal={handleToggleComparisonSaved}
           />
         );
 
@@ -262,10 +287,14 @@ export default function App() {
             editableTexts={{}}
             onTextChange={() => {}}
             isPlaceholderMode={false}
-            onGoToCompare={handleGoToCompareScreen}
-            onOpenShare={() => setActivePopup('share')}
+            savedOptions={savedOptionsList}
+            pickupDate={pickupDate}
+            returnDate={returnDate}
+            onDeleteSaved={() => setSavedOptionIds([])}
+            onGoToCompare={handleOpenSavedComparison}
+            onOpenShare={handleShareSavedComparison}
             onGoToSearch={() => setActiveScreenId('search')}
-            isSaved={isComparisonSaved}
+            isSaved={savedOptionsList.length >= 2}
           />
         );
 
@@ -353,6 +382,8 @@ export default function App() {
                   editableTexts={{}}
                   onTextChange={() => {}}
                   isPlaceholderMode={false}
+                  pickupDate={pickupDate}
+                  returnDate={returnDate}
                   onClose={closePopup}
                 />
               ) : (

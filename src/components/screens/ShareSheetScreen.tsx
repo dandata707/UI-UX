@@ -16,24 +16,45 @@ interface ShareSheetScreenProps {
   editableTexts: EditableTextMap;
   onTextChange: (id: string, text: string) => void;
   isPlaceholderMode: boolean;
+  pickupDate: string;
+  returnDate: string;
   onClose: () => void;
   customTitle?: string;
   wireframeStyle?: 'wireframe' | 'realistic';
 }
 
 export const ShareSheetScreen: React.FC<ShareSheetScreenProps> = ({
-  options: _options,
+  options,
   shops: _shops,
   isEditMode,
   editableTexts,
   onTextChange,
   isPlaceholderMode: _isPlaceholderMode,
+  pickupDate,
+  returnDate,
   onClose,
   customTitle,
 }) => {
   const [copied, setCopied] = useState(false);
   const [savedImage, setSavedImage] = useState(false);
   const shareUrl = 'https://dalatride.vn/c/8f3k2';
+  const bikeNames = options.map((option) => option.bikeName.split(' (')[0]);
+  const totalPrices = options.map((option) => option.totalEstimate);
+  const minTotal = totalPrices.length ? Math.min(...totalPrices) : 0;
+  const maxTotal = totalPrices.length ? Math.max(...totalPrices) : 0;
+  const priceRange =
+    minTotal === maxTotal
+      ? `${new Intl.NumberFormat('vi-VN').format(minTotal)}đ`
+      : `${new Intl.NumberFormat('vi-VN').format(minTotal)}đ - ${new Intl.NumberFormat('vi-VN').format(maxTotal)}đ`;
+
+  const parseDate = (value: string) => {
+    const [day, month, year] = value.split('/').map(Number);
+    return new Date(year, month - 1, day);
+  };
+  const rentalDays = Math.max(
+    1,
+    Math.round((parseDate(returnDate).getTime() - parseDate(pickupDate).getTime()) / 86_400_000)
+  );
 
   const handleCopy = () => {
     navigator.clipboard?.writeText(shareUrl);
@@ -139,18 +160,22 @@ export const ShareSheetScreen: React.FC<ShareSheetScreenProps> = ({
           <div className="font-bold uppercase text-[var(--text-primary)] border-b border-slate-200 pb-1">
             TÓM TẮT SO SÁNH
           </div>
-          <div className="space-y-0.5 text-slate-700">
-            <div className="flex items-center justify-between">
+          <div className="space-y-1 text-slate-700">
+            <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2">
               <span>- Số phương án so sánh:</span>
-              <span className="font-bold text-[var(--color-primary)]">3 xe máy (Vision, Sirius, Lead)</span>
+              <span className="font-bold text-right text-[var(--color-primary)]">
+                {options.length} xe máy ({bikeNames.join(', ')})
+              </span>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2">
               <span>- Thời gian thuê:</span>
-              <span>18/10/2026 - 20/10/2026 (2 ngày)</span>
+              <span className="text-right">
+                {pickupDate} - {returnDate} ({rentalDays} ngày)
+              </span>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2">
               <span>- Khoảng giá trọn gói:</span>
-              <span className="font-bold text-orange-600">235.000đ - 320.000đ</span>
+              <span className="font-bold text-right text-[var(--color-primary)]">{priceRange}</span>
             </div>
           </div>
         </div>

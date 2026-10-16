@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ArrowLeft,
   Bookmark,
@@ -50,6 +50,12 @@ export const CompareScreen: React.FC<CompareScreenProps> = ({
   } else if (forcedMode === 'four') {
     displayOptions = options.slice(0, 4);
   }
+
+  const comparisonKey = displayOptions.map((option) => option.id).join('|');
+
+  useEffect(() => {
+    setIsSaved(isSavedInitial);
+  }, [comparisonKey, isSavedInitial]);
 
   const count = displayOptions.length;
   const isTwo = count === 2;
