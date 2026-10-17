@@ -55,12 +55,8 @@ export default function App() {
   const [deliveryMode, setDeliveryMode] = useState<'delivery' | 'pickup'>('delivery');
   const [isLocationChosen, setIsLocationChosen] = useState<boolean>(true);
 
-  // Rental comparison selection (Default pre-selects 3 options: Vision, Sirius, Lead)
-  const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([
-    'opt-1-1', // Honda Vision - Shop 1
-    'opt-2-1', // Yamaha Sirius - Shop 2
-    'opt-3-1', // Honda Lead - Shop 3
-  ]);
+  // Rental comparison selection starts empty for each new search.
+  const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([]);
 
   // Selected option for Detail view (Màn 3)
   const [selectedDetailOptionId, setSelectedDetailOptionId] = useState<string>('opt-1-1');
@@ -135,6 +131,7 @@ export default function App() {
   };
 
   const handleSearchSubmit = (_params: SearchFilterState) => {
+    setSelectedOptionIds([]);
     setActiveScreenId('results');
   };
 

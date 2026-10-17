@@ -11,7 +11,7 @@ interface BottomNavProps {
 export const BottomNav: React.FC<BottomNavProps> = ({
   activeScreenId,
   onNavigate,
-  compareCount = 3,
+  compareCount = 0,
 }) => {
   // Tab Bar 3 tab: TÌM XE · SO SÁNH (n) · ĐÃ LƯU
   const isSearchActive =
@@ -48,7 +48,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     {
       id: 'compare-3' as ScreenId,
       label: `SO SÁNH`,
-      countBadge: compareCount > 0 ? compareCount : 3,
+      countBadge: compareCount,
       icon: ArrowRightLeft,
       isActive: isCompareActive,
       action: () =>
